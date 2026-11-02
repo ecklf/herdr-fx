@@ -8,15 +8,11 @@ This plugin targets Herdr TUI, not the separate native Herdr app.
 ## Requirements
 
 - Herdr TUI 0.9.5+ on macOS or Linux.
-- [Bun](https://bun.sh/) 1.3.5+ with PTY support on the Herdr server's `PATH`.
-- Interactive fx with its native Herdr reporter and OSC 7501 status output.
-  These interfaces exist in current fx source; compatibility with a particular
-  release should be checked before relying on restore.
-- `vercel-fx` or `fx` on the server's `PATH`, with fx authentication configured.
-  Shell aliases do not propagate to plugins. Set `HERDR_FX_BIN` to an absolute
-  executable path if needed; discovery prefers `vercel-fx`.
+- [Bun](https://bun.sh/) 1.3.5+ on the Herdr server's `PATH`.
+- A current [fx](https://fx.sh) installation on `PATH`, signed in and ready to use.
 
 No npm dependencies, build step, or additional API keys are required.
+Discovery prefers `fx`, falling back to `vercel-fx`; set `HERDR_FX_BIN` to override.
 
 ## Setup
 
@@ -118,11 +114,6 @@ server reachability or fx's event support. Tests use fake fx processes, fake
 Herdr sockets, and real PTYs; no model calls or user-session changes are involved.
 Verify notifications and restart restore in a scratch project against your
 installed fx/Herdr versions before relying on them.
-
-Herdr's OpenCode integration hooks are JavaScript; its registry is Rust. This
-plugin keeps lifecycle and socket logic in portable JavaScript, with Bun confined
-to the launcher. The [upstream plan](docs/architecture.md#upstream-in-small-changes)
-explains how native fx hooks can replace the PTY compatibility adapter.
 
 ## License
 

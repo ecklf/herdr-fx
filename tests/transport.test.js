@@ -54,6 +54,9 @@ test("relay handles a connection once even when more bytes arrive after its firs
   const relay = await createSessionRelay({ paneId: "p", onSession: (id) => sessions.push(id) });
   const client = net.createConnection(relay.socketPath);
   client.on("error", () => {});
+  // Explicitly close our side on EOF; Bun 1.3.5 can otherwise leave this
+  // half-closed connection waiting forever for a close event.
+  client.once("end", () => client.destroy());
   try {
     await new Promise((resolve) => client.once("connect", resolve));
     const closed = new Promise((resolve) => client.once("close", resolve));

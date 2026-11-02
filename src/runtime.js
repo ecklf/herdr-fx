@@ -4,14 +4,14 @@ import { createSessionRelay } from "./session-relay.js";
 import { sessionExists, SessionTracker } from "./session.js";
 import { resumeArgv } from "./commands.js";
 
-export function resolveFx(explicit, env = process.env) {
+export function resolveFx(explicit, env = process.env, which = Bun.which) {
   if (explicit || env.HERDR_FX_BIN) {
-    const path = Bun.which(explicit || env.HERDR_FX_BIN);
+    const path = which(explicit || env.HERDR_FX_BIN);
     if (!path) throw new Error("Configured fx executable was not found (HERDR_FX_BIN/--fx-bin)");
     return path;
   }
-  // The user's shell may alias fx=vercel-fx. Aliases do not exist in a plugin.
-  const path = Bun.which("vercel-fx") ?? Bun.which("fx");
+  // Prefer the standard command; support installations named vercel-fx too.
+  const path = which("fx") ?? which("vercel-fx");
   if (!path) throw new Error("fx not found; put fx/vercel-fx on PATH or set HERDR_FX_BIN");
   return path;
 }
