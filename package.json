@@ -1,0 +1,13 @@
+{
+  "name": "herdr-fx",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Herdr TUI lifecycle and exact-session restore integration for fx",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "bun test",
+    "check": "bun run scripts/check.js"
+  },
+  "engines": { "bun": ">=1.3.5" }
+}

@@ -1,0 +1,34 @@
+id = "herdr-fx"
+name = "fx"
+version = "0.1.0"
+min_herdr_version = "0.9.5"
+description = "Run fx with lifecycle notifications and exact-session restore"
+platforms = ["macos", "linux"]
+
+[[actions]]
+id = "open"
+title = "Start fx"
+description = "Start fx in a split using the focused pane's project directory"
+contexts = ["workspace", "tab", "pane"]
+command = ["bun", "bin/open.js"]
+
+[[actions]]
+id = "resume"
+title = "Resume fx session"
+description = "Open fx's session picker in the current project"
+contexts = ["workspace", "tab", "pane"]
+command = ["bun", "bin/open.js", "--resume"]
+
+[[panes]]
+id = "session"
+title = "fx"
+placement = "split"
+# Herdr runs panes in the project cwd, not the installation directory.
+# This fixed, quoted bootstrap resolves the entrypoint without evaluating fx arguments.
+command = ["sh", "-c", 'exec bun "$HERDR_PLUGIN_ROOT/bin/herdr-fx.js" "$@"', "herdr-fx"]
+
+[[panes]]
+id = "resume"
+title = "fx sessions"
+placement = "split"
+command = ["sh", "-c", 'exec bun "$HERDR_PLUGIN_ROOT/bin/herdr-fx.js" "$@"', "herdr-fx", "--resume"]
